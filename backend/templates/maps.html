@@ -36,9 +36,11 @@
         var someVar = {{ locations | js }};
         function theFunc(thing){
             thing.forEach(element => {
-                var x = element['id']
-                var marker = L.marker([element.lat, element.long]).addTo(mymap)
-                marker.bindPopup(`<b><a href="{% url 'backend:location' pk=1 %}">${element.name}</a></b><br>${element.description}`).openPopup();
+                let pk = element['id']
+                let x = "{% url 'backend:location' pk=" + pk
+                let y = x + "%}"
+                let marker = L.marker([element.lat, element.long]).addTo(mymap)
+                marker.bindPopup(`<b><a href=${x}>${element.name}</a></b><br>${element.description}`).openPopup();
             });
         }
         theFunc(someVar)

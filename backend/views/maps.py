@@ -8,6 +8,5 @@ def maps(request):
     """display locations, use mapping JS import to display and create interactive environment"""
     location_list = Area.objects.all().values('name', 'description', 'lat', 'long', 'id')
     locations = list(location_list)
-    print(locations[1]['id'])
     context = {"locations": locations}
     return render(request, 'maps.html', context)
