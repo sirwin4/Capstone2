@@ -20,10 +20,14 @@
 
 
 <body>
-    <h1 id="cool">a</h1>
+    <h1>Area Map</h1>
 
     <div id="mapid"></div>
 
+    {% for location in locations %}
+    <p><a id="location{{location.id}}" href="{% url 'backend:location' location.id %}">{{location.name}}</a></p>
+    <p>{{location.description}}</p>
+    {% endfor %}
     
     <script type="text/javascript">
         var mymap = L.map('mapid').setView([37.845927, -101.726424], 4)
@@ -37,10 +41,8 @@
         function theFunc(thing){
             thing.forEach(element => {
                 let pk = element['id']
-                let x = "{% url 'backend:location' pk=" + pk
-                let y = x + "%}"
                 let marker = L.marker([element.lat, element.long]).addTo(mymap)
-                marker.bindPopup(`<b><a href=${x}>${element.name}</a></b><br>${element.description}`).openPopup();
+                marker.bindPopup(`<button id=pk onclick=window.location.replace(document.getElementById("location${pk}").href)>${element.name}</button>`).openPopup();
             });
         }
         theFunc(someVar)

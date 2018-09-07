@@ -1,0 +1,29 @@
+{% load js %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{piece.name}}</title>
+</head>
+
+
+<body>
+
+    <h1>{{piece.name}}</h1>
+    <div>
+        <p>In your rack: {{quantity}}</p>
+        
+        <a href="{% url 'backend:add_piece' piece.id %}">Add one to your rack</a><br>
+
+        <a href="{% url 'backend:remove_piece' piece.id %}">Remove one from your rack</a>
+        
+    </div>
+    
+</body>
+
+
+</html>
