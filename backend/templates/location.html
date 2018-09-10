@@ -31,6 +31,9 @@
             <li class="have"><a href="{% url 'backend:piece' pk=item.id %}">{{item.name}} {{item.areaquantity}} - stocked</li></a>
             {% endfor %}
         </ul>
+        {% if rangelist != "" %}
+            <p>{{rangelist}}</p>
+        {% endif %}
     </div>
     <div id="mapid"></div>
     <script type="text/javascript">

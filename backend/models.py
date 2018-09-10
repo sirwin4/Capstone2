@@ -22,8 +22,7 @@ class Piece(models.Model):
     standard_number = models.IntegerField(default=0)
     min_size = models.IntegerField(default=0)
     max_size = models.IntegerField(default=0)
-    active = models.BooleanField(null=True, blank=True)
-    passive = models.BooleanField(null=True, blank=True)
+    SLCD = models.BooleanField(default=False)
     user_rack = models.ManyToManyField(User, through='Userrack')
     area_rack = models.ManyToManyField(Area, through='Arearack')
 
