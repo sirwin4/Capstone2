@@ -61,7 +61,7 @@ def location(request, pk):
                             if total > indian_creek:
                                 indian_creek = total
                                 percent = total / 10 * 100
-                                range_list = '%.1f mm to %.1f mm closest to covered with %.0f percent'%(low_end, item.max_size, percent)
+                                range_list = '%.1f mm to %.1f mm closest to covered with %.1f percent'%(low_end, item.max_size, percent)
                 
         print(range_list)
     arealat = location.lat

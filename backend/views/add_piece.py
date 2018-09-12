@@ -19,4 +19,4 @@ def add_piece(request, pk):
         else:
             Userrack.objects.create(user=current_user, piece=piece_requested, quantity=1)
             
-    return HttpResponseRedirect(reverse('backend:piece', kwargs={'pk' : piece_requested.id}))    
+    return HttpResponseRedirect(reverse('backend:piece', kwargs={'pk' : piece_requested.id}))
