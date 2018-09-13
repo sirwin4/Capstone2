@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from backend.models import Area, Piece, Arearack, Userrack
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from .coverage_functions import coverage, area_req
 # Create your views here.
 
 #add @login_required
@@ -63,10 +64,11 @@ def location(request, pk):
                                 percent = total / 10 * 100
                                 range_list = '%.1f mm to %.1f mm closest to covered with %.1f percent'%(low_end, item.max_size, percent)
                 
-        print(range_list)
+        
     arealat = location.lat
     arealong = location.long
-
+    
+    print(area_req(user, location, coverage(user)))
     
     context = {
         "location": location,
