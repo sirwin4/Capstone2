@@ -8,7 +8,7 @@ from django.urls import reverse
 # @login_required
 def add_piece(request, pk):
     piece_requested = Piece.objects.get(id=pk)
-    current_user = User.objects.all()[0]
+    current_user = request.user
     p = current_user.piece_set.all()
     if len(p):
         print("cool")

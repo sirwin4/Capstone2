@@ -8,7 +8,7 @@ def maps(request):
     """display locations, use mapping JS import to display and create interactive environment"""
     location_list = Area.objects.all().values('name', 'description', 'lat', 'long', 'id')
     locations = list(location_list)
-    user = User.objects.all()[0]
+    user = request.user
     if user.id:
         for location in locations:
             area_list =list(Arearack.objects.values('id'))

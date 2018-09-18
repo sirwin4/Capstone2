@@ -11,10 +11,8 @@ def overall(user_rack):
         reducing_rack.append(item)
     range_array = [] #{max: max min: min, range: coverage}
     done = []
-    
     result_array = [] # check by keys to pull out, then delete; {'size': '%'%(max), 'min': min, 'max': max, 'quantity': quantity, 'extra_ids':[-associated id's, can add to quantity-]}, {'extras':[All extra id's]} don't ned to add to both, just check if current size needs them first then assign all remaining gray area id's to the next 'size'
     for user_gear in user_rack:
-        
         size_range = user_gear.max_size - user_gear.min_size
         overlap_minimum = size_range / 6
         overlap_equatable = (size_range * 3) / 4
@@ -121,12 +119,10 @@ def overall(user_rack):
                                     best_bet = item
                                     best_bet.qunatity = 1
                     possible_piece = best_bet
-            result = {"upper": compatible_max, "lower": user_gear.min_size, "quantity": size_quantity, 'versatile': versatile}
-            
+            result = {"upper": compatible_max - (compatible_max / 7.67), "lower": user_gear.min_size + (user_gear.min_size / 7.67), "quantity": size_quantity, 'versatile': versatile}
             if possible_piece == "":
-                result.quantity = result.quantity + len(result.versatile)
-                result.versatile = []
-                print('no possible')
+                result['quantity'] = result['quantity'] + len(result['versatile'])
+                result['versatile'] = []
                         #build linear coverage value
 
                         #check dictionary for max and min values in range
@@ -165,7 +161,6 @@ def overall(user_rack):
                     min_val = user_gear.min_size
 
                 if user_gear in reducing_rack:
-                    print('current', user_gear)
                     reducing_rack.remove(user_gear)
                 reducing_rack.clear()
             result_array.append(result)
@@ -173,13 +168,12 @@ def overall(user_rack):
         for item in user_rack:
             if item not in done:
                 reducing_rack.append(item)
-        return(result_array)
+    return(result_array)
          #if range of objects is insuffecient, two records may be counted as one size in order to more accurately survey range quantity, deal with in quantity calculation... maybe
 def coverage(user):
     cover = Userrack.objects.filter(user=user)
     coverage_list = []
     for item in cover:
-        print('location', item.quantity)
         numbered_piece = item.piece
         if item.piece.SLCD == True:
             setattr(numbered_piece, 'quantity', item.quantity)

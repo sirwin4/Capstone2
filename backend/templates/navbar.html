@@ -1,0 +1,11 @@
+{% load static %}
+<nav>
+        <a href="{% url 'backend:maps' %}">Map</a>
+        <a href="{% url 'backend:gear' %}">Gear</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'backend:profile' %}">Profile</a>
+        <a href="{% url 'backend:logout' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'backend:login' %}">Login</a>
+        {% endif %}
+</nav>

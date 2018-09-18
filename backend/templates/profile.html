@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{piece.name}}</title>
+</head>
+
+
+<body>
+    {% include "navbar.html" %}
+    <h1>{{user.username}}</h1>
+    <div>
+        <ul>
+            {% if has_gear != 0 %}
+                {% for piece in pieces %}
+                    <li>{{piece.name}}
+                        <ul>
+                            <li>Quantity: {{piece.quantity}}</li>
+                            <li>Range: {{piece.min_size}} - {{piece.max_size}}</li>
+                        </ul>
+                    </li>
+                    {% endfor %}
+            {% else %}
+                    <li>No Gear Added Yet!</li>
+            {% endif %}
+            
+            
+        </ul>
+    </div>
+    
+</body>
+
+
+</html>

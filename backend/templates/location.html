@@ -20,12 +20,19 @@
 
 
 <body>
-
+    {% include "navbar.html" %}
     <h1>{{location.name}}</h1>
+    {% if user.username != '' %}
+    <h3>Your Rack Safely Covers: {{areacoverage}}%</h3>
+    {% endif %}
     <div>
         <ul>
             {% for item in arearack %}
+            {% if user.username != '' %}
             <li class="need"><a href="{% url 'backend:piece' pk=item.id %}">{{item.name}} - {{item.areaquantity}} required, {{item.userquantity}} in rack</li></a>
+            {% else %}
+            <li class="need"><a href="{% url 'backend:piece' pk=item.id %}">{{item.name}} - {{item.areaquantity}} required</li></a>
+            {% endif %}
             {% endfor %}
             {% for item in userrack %}
             <li class="have"><a href="{% url 'backend:piece' pk=item.id %}">{{item.name}} {{item.areaquantity}} - stocked</li></a>
