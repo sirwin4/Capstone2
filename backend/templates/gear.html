@@ -9,12 +9,31 @@
     <title>Gear</title>
 </head>
 <body>  
+
     {% include "navbar.html" %}
+
+    <h1>Gear</h1>
+    
     <div>
-        <ul>
-            {% for item in pieces %}
-            <li class="need"><a href="{% url 'backend:piece' pk=item.id %}">{{item.name}}</li></a>
+            {% for item in gear %}
+            <a href="{% url 'backend:piece' pk=item.id %}">{{item.name}}</a><br>
             {% endfor %}
-        </ul>
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if contacts.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ gear.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ gear.number }} of {{ gear.p.num_pages }}.
+            </span>
+    
+            {% if gear.has_next %}
+                <a href="?page={{ gear.next_page_number }}">next</a>
+                <a href="?page={{ gear.p.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
     </div>
 </body>

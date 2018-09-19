@@ -35,7 +35,7 @@
             {% endif %}
             {% endfor %}
             {% for item in userrack %}
-            <li class="have"><a href="{% url 'backend:piece' pk=item.id %}">{{item.name}} {{item.areaquantity}} - stocked</li></a>
+            <li class="have"><a href="{% url 'backend:piece' pk=item.id %}">{{item.name}} - {{item.areaquantity}} stocked</li></a>
             {% endfor %}
         </ul>
         {% if rangelist != "" %}

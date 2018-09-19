@@ -1,19 +1,17 @@
 from backend.models import Area, Piece, Arearack, Userrack
-s_lower = 15
-s_upper =  80
-s_req = []
 
-def nrg(user, location, user_coverage):
+
+def area_assess(user, location, user_coverage, cam_req_dicts, req_items):
     user_rack = user.piece_set.all()
     user_rack = sorted(user_rack, key=lambda user_rack: user_rack.min_size)
-    req_items = ["standard", "micro"]
+    req_items = req_items
     area_rack = location.piece_set.all()
     versatile_leftovers = []
     for item in area_rack:
         req_items.append(item)
     checked = []
     req_items.append(s_req)
-    range_quantities = [{"upper": s_upper, "lower": 10, "quantity": 2}]
+    range_quantities = cam_req_dicts
     unsatisfied = len(req_items) * 7
     compare = len(req_items) * 7
     for req in range_quantities:
@@ -21,9 +19,10 @@ def nrg(user, location, user_coverage):
         compare = compare + (req['upper'] - req['lower']) * req['quantity']
         for item in user_coverage:
             item['quantity'] = item['quantity'] + len(versatile_leftovers)
-            print("all items", item)
             #account for smaller pieces representing more coverage than 
             if item != []:
+                # if req['offset'] == True:
+                #ADD ^
                 if item['upper'] < req['lower'] or item['lower'] < req['upper']:
                     if item['quantity'] >= req['quantity']:
                         if item['lower'] >= req['lower'] and item['upper'] <= req['upper']:
@@ -77,12 +76,22 @@ def nrg(user, location, user_coverage):
         #add offsets later
         if item == "standard":
             for gear in user_rack:
-                if gear.SLCD== False and gear.min_size > 9 and gear not in checked:
+                if gear.gear_type == "Nut" and gear.min_size > 9 and gear not in checked:
                     checked.append(gear)
                     unsatisfied = unsatisfied - 7
         if item == "micro":
             for gear in user_rack:
-                if gear.SLCD == False and gear.min_size < 9 and gear not in checked:
+                if gear.gear_type == "Nut" and gear.min_size < 9 and gear not in checked:
+                    checked.append(gear)
+                    unsatisfied = unsatisfied - 7
+        if item == "standard offset":
+            for gear in user_rack:
+                if gear.gear_type == "Nut" and gear.min_size > 9 and gear.offset == True and gear not in checked:
+                    checked.append(gear)
+                    unsatisfied = unsatisfied - 7
+        if item == "micro offset":
+            for gear in user_rack:
+                if gear.gear_type == "Nut" and gear.min_size < 9 and gear.offset == True and gear not in checked:
                     checked.append(gear)
                     unsatisfied = unsatisfied - 7
         else:
@@ -98,16 +107,26 @@ def nrg(user, location, user_coverage):
                     if gear.quantity > 0:
                         gear.quantity - 1
                         unsatisfied = unsatisfied - 7
-    print('unsatisfied', unsatisfied)
-    print(compare)
     area_coverage_percent = 100 - ((unsatisfied / compare) * 100)
     if area_coverage_percent > 97:
         area_coverage_percent = 100
+    area_coverage_percent = float('%.2f' % area_coverage_percent)
     return area_coverage_percent      
 
 def area_req(user, location, user_coverage):
+    s_cam_req = {"upper": 80, "lower": 15, "quantity": 2}
+    s_req = ["micro"] 
+    x = 10
+    while x > 0:
+        s_req.append("standard")
+    x -= 1
+    cam_req = []
+    cam_req.append(s_cam_req)
+    req_items = s_req
     if location.name == "New River Gorge":
-        return nrg(user, location, user_coverage)
+        cam_req[0]["lower"] = 10
+        # req_items.append("micro")
+        return area_assess(user, location, user_coverage, cam_req, req_items)
 
       
                 

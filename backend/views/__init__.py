@@ -6,4 +6,3 @@ from .remove_piece import remove_piece
 from .register import register
 from .profile import profile
 from .gear import gear
-from .piece_scrape import piece_scrape

@@ -10,16 +10,20 @@ from .coverage_functions import coverage, area_req
 def location(request, pk):
     """display location details of a specific area and its rack"""
     location = Area.objects.get(id=pk)
-    area_list =list(location.piece_set.all().values('id', 'name', 'standard_number', 'min_size', 'max_size'))
+    area_list =list(location.piece_set.all().values('id', 'name', 'min_size', 'max_size'))
     userrack = []
     user = request.user
+    if user.is_authenticated:
+        user = user
+    else: 
+        user = ''
     areacoverage = 0
     range_list = ""
     if len(area_list) != 0:
         for item in area_list:
             area_quantity = Arearack.objects.get(area=location.id, piece=item['id']).quantity
             item['areaquantity'] = area_quantity
-            if user.username != '':
+            if user != '':
                 user_quantity = Userrack.objects.filter(piece=item['id'], user=user)
                 if len(user_quantity) != 0:
                     item['userquantity'] = user_quantity[0].quantity
@@ -28,12 +32,13 @@ def location(request, pk):
                 if item['userquantity'] >= item['areaquantity']:
                     userrack.append(item)
                     area_list.remove(item)
-        cover = coverage(user)
-        areacoverage = area_req.area_req(user, location, cover)
+        
+                cover = coverage(user)
+                areacoverage = area_req.area_req(user, location, cover)
     else:
         user_list = Userrack.objects.filter(user=user)
         cam_list = []
-        if len(user_list != 0):
+        if len(user_list) != 0:
             for item in user_list:
                 piece = Piece.objects.get(id=item.piece_id)
                 if piece.SLCD == True:

@@ -27,6 +27,7 @@
 
     {% for location in locations %}
     <p><a id="location{{location.id}}" href="{% url 'backend:location' location.id %}">{{location.name}}</a></p>
+    <p>Coverage: {{location.cover}} %</p>
     <p>{{location.description}}</p>
     {% endfor %}
     
@@ -42,8 +43,12 @@
         function theFunc(thing){
             thing.forEach(element => {
                 let pk = element['id']
+                let cover = ""
+                if(element['cover'] !=+ "invalid"){
+                    cover = element['cover']
+                }
                 let marker = L.marker([element.lat, element.long]).addTo(mymap)
-                marker.bindPopup(`<button id=pk onclick=window.location.replace(document.getElementById("location${pk}").href)>${element.name}</button>`).openPopup();
+                marker.bindPopup(`<button id=pk onclick=window.location.replace(document.getElementById("location${pk}").href)>${element.name}</button><div>Coverage: ${cover}</div>`).openPopup();
             });
         }
         theFunc(someVar)
