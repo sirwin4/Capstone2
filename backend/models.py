@@ -19,10 +19,11 @@ class Area(models.Model):
 
 class Piece(models.Model):
     name = models.CharField(max_length=30)
-    standard_number = models.IntegerField(default=0)
     min_size = models.IntegerField(default=0)
     max_size = models.IntegerField(default=0)
     SLCD = models.BooleanField(default=False)
+    offset = models.BooleanField(default=False)
+    gear_type = models.CharField(blank=True, null=True, max_length=50)
     user_rack = models.ManyToManyField(User, through='Userrack')
     area_rack = models.ManyToManyField(Area, through='Arearack')
 

@@ -1,7 +1,7 @@
 import csv
 import requests
 from bs4 import BeautifulSoup
-type_list = ["nut", "cam", "tricam", "hex", "bigbro", "ballnut"]
+type_list = ["Nut", "Cam", "Tricam", "Hex", "Bigbro", "Ballnut"]
 
 result_dict_list = []
 
@@ -24,7 +24,5 @@ def url_list(type_of_gear):
 
 for item in type_list:
     urls = url_list(item)
-    dict_item = {"type": item, "urls": urls}
+    dict_item = {"item_type": item, "urls": urls}
     result_dict_list.append(dict_item)
-
-print(result_dict_list[0])
