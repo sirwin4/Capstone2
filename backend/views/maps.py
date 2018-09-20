@@ -7,47 +7,33 @@ from .coverage_functions import coverage, area_req
 
 def maps(request):
     """display locations, use mapping JS import to display and create interactive environment"""
-    location_list = Area.objects.all().values('name', 'description', 'lat', 'long', 'id')
-    locations = list(location_list)
+    location_list = Area.objects.all()
     new_locations = []
     user = request.user
-    if user.id:
-        for location in locations:
-            area_list =list(Arearack.objects.values('id', 'piece', 'area'))
-            for area in area_list:
-                location = Area.objects.get(id=area['area'])
-                area_list =list(location.piece_set.all().values('id', 'name', 'min_size', 'max_size'))
-                userrack = []
-                user = request.user
-                if user.is_authenticated:
-                    user = user
-                else: 
-                    user = ''
+    for location in location_list:
+            area_list = Arearack.objects.filter(area=location.id)
+            if len(area_list) != 0:
+                area_list = list(area_list.values('id', 'piece', 'area', 'quantity'))
                 areacoverage = 0
-                range_list = ""
                 if len(area_list) != 0:
                     for item in area_list:
-                        area_quantity = Arearack.objects.get(area=location.id, piece=item['id']).quantity
-                        item['areaquantity'] = area_quantity
-                        if user != '':
-                            user_quantity = Userrack.objects.filter(piece=item['id'], user=user)
-                            if len(user_quantity) != 0:
-                                item['userquantity'] = user_quantity[0].quantity
-                            else:
-                                item['userquantity'] = 0
-                            if item['userquantity'] >= item['areaquantity']:
-                                userrack.append(item)
-                                area_list.remove(item)
-                    
+                        if user.username != "":
+                            
                             cover = coverage(user)
-                            areacoverage = area_req.area_req(user, location, cover)
-                            new_locale = {"cover": areacoverage}
+                            # areacoverage = area_req.area_req(user, location, cover)
+                            new_locale = {"cover": 0}
                             itera = location.__dict__
                             for key in itera.keys():
                                 if key != "_state":
                                     new_locale[key] = itera[key]
                             new_locations.append(new_locale)
-                            print(new_locale)
+                        else:
+                            new_locale = {"cover": ""}
+                            itera = location.__dict__
+                            for key in itera.keys():
+                                if key != "_state":
+                                    new_locale[key] = itera[key]
+                            new_locations.append(new_locale)
                 else:
                     user_list = Userrack.objects.filter(user=user)
                     cam_list = []
@@ -58,6 +44,7 @@ def maps(request):
                                 cam_list.append(piece)
 
                         indian_creek = 0
+                        percent = 0
                         for item in cam_list:
                             if item.max_size <= 90 and item.min_size >= 10:
                                 total = Userrack.objects.get(piece=item.id, user=user).quantity
@@ -70,16 +57,17 @@ def maps(request):
                                         if cam.min_size < low_end and cam.min_size >= 10:
                                             low_end = cam.min_size
                                         if total >= 10:
-                                            if indian_creek >= 10:
-                                                if total >= indian_creek:
-                                                    indian_creek = total
-                                            elif(total >= 10):
-                                                indian_creek = total
+                                            percent = 100
 
                                         elif indian_creek < 10:
                                             if total > indian_creek:
                                                 indian_creek = total
-                                                percent = total / 10 * 100  
-
+                                                percent = total / 10 * 100
+                        other_location_dict = {"cover": percent}
+                        iterated = location.__dict__
+                        for key in iterated.keys():
+                            if key != "_state":
+                                other_location_dict[key] = iterated[key]
+                        new_locations.append(other_location_dict)
     context = {"locations": new_locations}
     return render(request, 'maps.html', context)

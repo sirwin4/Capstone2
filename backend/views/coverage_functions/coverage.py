@@ -1,5 +1,6 @@
 #if range of objects is insuffecient, two records may be counted as one size in order to more accurately survey range quantity, deal with in quantity calculation
 from backend.models import Area, Piece, Arearack, Userrack
+from django.contrib.auth.models import User
 
 def overall(user_rack):
     max_val = 0
@@ -178,6 +179,6 @@ def coverage(user):
         if item.piece.SLCD == True:
             setattr(numbered_piece, 'quantity', item.quantity)
             coverage_list.append(numbered_piece)
-    
     x = overall(coverage_list)
     return x
+    #from django.contrib.auth.models import User
