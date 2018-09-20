@@ -32,7 +32,8 @@ def location(request, pk):
                 if item['userquantity'] >= item['areaquantity']:
                     userrack.append(item)
                     area_list.remove(item)
-        
+                print(userrack)
+                print(area_list)
                 cover = coverage(user)
                 areacoverage = area_req.area_req(user, location, cover)
     else:
