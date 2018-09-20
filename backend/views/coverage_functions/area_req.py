@@ -128,7 +128,9 @@ def area_assess(user, location, user_coverage, cam_req_dicts, req_items):
                     if gear.quantity > 0:
                         gear.quantity - 1
                         unsatisfied = unsatisfied - 7
-    area_coverage_percent = 100 - ((unsatisfied / compare) * 100)
+    print("unsat", unsatisfied)
+    print(compare)
+    area_coverage_percent = ((compare / unsatisfied) * 100)
     if area_coverage_percent > 97:
         area_coverage_percent = 100
     area_coverage_percent = float('%.2f' % area_coverage_percent)

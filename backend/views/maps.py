@@ -20,6 +20,7 @@ def maps(request):
                         if user.username != "":
                             cover = coverage(user)
                             areacoverage = area_req.area_req(user, location, cover)
+                            print("areacov", areacoverage)
                             new_locale = {"cover": areacoverage}
                             itera = location.__dict__
                             for key in itera.keys():

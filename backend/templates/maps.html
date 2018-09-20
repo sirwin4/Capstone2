@@ -48,7 +48,7 @@
                     cover = element['cover']
                 }
                 let marker = L.marker([element.lat, element.long]).addTo(mymap)
-                marker.bindPopup(`<button id=pk onclick=window.location.replace(document.getElementById("location${pk}").href)>${element.name}</button><div>Coverage: ${cover}</div>`).openPopup();
+                marker.bindPopup(`<button id=pk onclick=window.location.replace(document.getElementById("location${pk}").href)>${element.name}</button><div>Coverage: ${element.cover}</div>`).openPopup();
             });
         }
         theFunc(someVar)

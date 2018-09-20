@@ -182,3 +182,4 @@ def coverage(user):
             coverage_list.append(numbered_piece)
     x = overall(coverage_list)
     return x
+    
