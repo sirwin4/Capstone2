@@ -4,25 +4,49 @@ from django.db import models
 from backend.models import Piece
 from bs4 import BeautifulSoup
 
-type_list = ["Hex", "Bigbro", "Ballnut"]
+type_list = ["Nut", "Cam", "Hex", "Ballnut", "Bigbro", "Tricam"]
 
 result_dict_list = []
 
 
 def url_list(type_of_gear):
-    url = 'https://weighmyrack.com/' + type_of_gear
-    response = requests.get(url)
-    html = response.content
-    soup = BeautifulSoup(html)
-    anchors = soup.find_all('a', attrs={'class', 'fullsize-link'})
+    x = [0, 66, 112, 485]
+    y = [0, 16, 27, 35, 51]
+    base_urls = []
     links = []
+    if type_of_gear == "Cam":
+        for num in x:
+            urlss = 'https://weighmyrack.com/' + type_of_gear +"?f[]=field_weight:%5B" + str(num) + "%20TO%20990%5D"
+            base_urls.append(urlss)
+        
+    if type_of_gear == "Nut":
+        for num in y:
+            urlss = 'https://weighmyrack.com/' + type_of_gear +"?f[]=field_weight:%5B" + str(num) + "%20TO%20990%5D"
+            base_urls.append(urlss)
+    if len(base_urls) !=0:
+        for url in base_urls:
+            response = requests.get(url)
+            html = response.content
+            soup = BeautifulSoup(html)
+            anchors = soup.find_all('a', attrs={'class', 'fullsize-link'})
 
-    for item in anchors:
-        link = item['href']
-        if link.find("/nut/") == -1:
-            link = "https://weighmyrack.com" + link
-            links.append(link)
+            for item in anchors:
+                link = item['href']
+                if link.find("/nut/") == -1:
+                    link = "https://weighmyrack.com" + link
+                    links.append(link)
+    else:
+        url = 'https://weighmyrack.com/' + type_of_gear
+        response = requests.get(url)
+        html = response.content
+        soup = BeautifulSoup(html)
+        anchors = soup.find_all('a', attrs={'class', 'fullsize-link'})
 
+        for item in anchors:
+            link = item['href']
+            if link.find("/nut/") == -1:
+                link = "https://weighmyrack.com" + link
+                links.append(link)
     return(links)
 
 for item in type_list:
@@ -75,7 +99,8 @@ def piece_scrape(result, item_type):
         if item[0] == 'Type':
             final_dict['Type'] = item[1]
         if item[0] == 'Offset':
-            final_dict['Offset'] = True
+            if "Yes" in item[1]:
+                final_dict['Offset'] = True
         if 'Range' in item[0]:
             check = []
             worst_case= []
@@ -150,7 +175,17 @@ def piece_scrape(result, item_type):
                     for checkout in converted:
                         checked.append(checkout)
                 low = ""
-                high = 0
+                high = ""
+                for size in checked:
+                    
+                    try:
+                        float(size)
+                        if high == "":
+                            high = size
+                        if size > high:
+                            high = size
+                    except:
+                        pass
                 for size in checked:
                     try:
                         float(size)
@@ -158,10 +193,8 @@ def piece_scrape(result, item_type):
                             low = size
                         elif size < low:
                             low = size
-                        if size > high:
-                            high = size
                     except:
-                        pass        
+                        pass
                 if low == "":
                     final_dict = "buggy piece"
                 else:
@@ -202,7 +235,6 @@ def piece_scrape(result, item_type):
             if stringer != "weighmyrack.com" and stringer != "https:" and stringer != "" and stringer != " " and stringer != final_dict['Type']:
                 v = stringer.split("-")
                 for string in v:
-                    print(string)
                     x = final_dict['Name'].split(" ")
                     if string not in x:
                         name_add = name_add + string + " "
@@ -232,11 +264,6 @@ def convert(result_dict):
             piece.save()
         else:
             return
-
-# url = "https://weighmyrack.com/Hex/Black-Diamond-Wired-Hexentric-2"
-
-# x = piece_scrape(url, "nut")
-# print(x)
 
 for item in result_dict_list:
     #dict_item = {"item_type": item, "urls": urls}

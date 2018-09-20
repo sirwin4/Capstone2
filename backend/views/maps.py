@@ -18,10 +18,9 @@ def maps(request):
                 if len(area_list) != 0:
                     for item in area_list:
                         if user.username != "":
-                            
                             cover = coverage(user)
-                            # areacoverage = area_req.area_req(user, location, cover)
-                            new_locale = {"cover": 0}
+                            areacoverage = area_req.area_req(user, location, cover)
+                            new_locale = {"cover": areacoverage}
                             itera = location.__dict__
                             for key in itera.keys():
                                 if key != "_state":

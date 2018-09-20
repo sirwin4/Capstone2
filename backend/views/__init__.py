@@ -6,3 +6,4 @@ from .remove_piece import remove_piece
 from .register import register
 from .profile import profile
 from .gear import gear
+from .gear_categories import gearcat

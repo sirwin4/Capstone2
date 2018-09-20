@@ -44,7 +44,7 @@
             thing.forEach(element => {
                 let pk = element['id']
                 let cover = ""
-                if(element['cover'] !=+ "invalid"){
+                if(element['cover'] !== "invalid"){
                     cover = element['cover']
                 }
                 let marker = L.marker([element.lat, element.long]).addTo(mymap)

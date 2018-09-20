@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^gear/$', views.gear, name="gear"),
     url(r'^add_piece/(?P<pk>[0-9]+)/$', views.add_piece, name="add_piece"),
     url(r'^remove_piece/(?P<pk>[0-9]+)/$', views.remove_piece, name="remove_piece"),
+    url(r'^gearcat/(?P<cat>[0-9]+)/$', views.gearcat, name="gearcat"),
 
 ]

@@ -88,38 +88,39 @@ def overall(user_rack):
                             reducing_rack.remove(gear)  #remove it from the list, put it back later if it's the best hope to have a next piece that might keep the coverage continuous
             
             recheck = []
+            #FIX
             #put something versatile back if it has a bigger max size and might keep things continuous
-            if possible_piece == "":
-                if versatile != []:
-                    best_bet = ""
-                    for item in versatile:
-                        if item.max_size > compatible_max:
-                            if best_bet != "":
-                                if best_bet.quantity:
-                                    if best_bet.quantity == 1:
-                                        if best_bet.max_size < item.max_size:
-                                            versatile.append(best_bet)
-                                            best_bet = item
-                                            versatile.remove(item)
-                                            recheck.append(item)
-                                else:
-                                    best_bet = item
-                                    versatile.remove(item)
-                                    recheck.append(item)
-                            else:
-                                if best_bet.max_size < item.max_size:
-                                    #id value might be confusing, we'll see
-                                    item.quantity = item.qunatity - 1
-                                    best_bet = item
-                                    best_bet.qunatity = 1
+            # if possible_piece == "":
+            #     if versatile != []:
+            #         best_bet = ""
+            #         for item in versatile:
+            #             if item.max_size > compatible_max:
+            #                 if best_bet != "":
+            #                     if best_bet.quantity:
+            #                         if best_bet.quantity == 1:
+            #                             if best_bet.max_size < item.max_size:
+            #                                 versatile.append(best_bet)
+            #                                 best_bet = item
+            #                                 versatile.remove(item)
+            #                                 recheck.append(item)
+            #                     else:
+            #                         if best_bet.max_size < item.max_size:
+            #                             #id value might be confusing, we'll see
+            #                             item.quantity = item.qunatity - 1
+            #                             best_bet = item
+            #                             best_bet.qunatity = 1
+            #                 else:
+            #                     best_bet = item
+            #                     versatile.remove(item)
+            #                     recheck.append(item)
                                         
 
-                                else:
-                                    #id value might be confusing, we'll see
-                                    item.quantity = item.qunatity - 1
-                                    best_bet = item
-                                    best_bet.qunatity = 1
-                    possible_piece = best_bet
+                    #             else:
+                    #                 #id value might be confusing, we'll see
+                    #                 item.quantity = item.qunatity - 1
+                    #                 best_bet = item
+                    #                 best_bet.qunatity = 1
+                    # possible_piece = best_bet
             result = {"upper": compatible_max - (compatible_max / 7.67), "lower": user_gear.min_size + (user_gear.min_size / 7.67), "quantity": size_quantity, 'versatile': versatile}
             if possible_piece == "":
                 result['quantity'] = result['quantity'] + len(result['versatile'])
@@ -181,4 +182,3 @@ def coverage(user):
             coverage_list.append(numbered_piece)
     x = overall(coverage_list)
     return x
-    #from django.contrib.auth.models import User

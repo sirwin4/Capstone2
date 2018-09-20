@@ -1,18 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gear</title>
+    <title>{{cat}}</title>
 </head>
 <body>  
 
     {% include "navbar.html" %}
 
-    <h1>Gear</h1>
+    <h1>{{cat}}</h1>
     <br>
     <nav>
         <a href="{% url 'backend:gearcat' cat=1 %}">Cam</a>
@@ -20,7 +16,7 @@
         <a href="{% url 'backend:gearcat' cat=3 %}">Nut</a>
         <a href="{% url 'backend:gearcat' cat=4 %}">Ball Nut</a>
         <a href="{% url 'backend:gearcat' cat=5 %}">Hex</a>
-        <a href="{% url 'backend:gearcat' cat=5 %}">Big Bro</a>
+        <a href="{% url 'backend:gearcat' cat=6 %}">Big Bro</a>
     </nav>
     <br>
     <div>
